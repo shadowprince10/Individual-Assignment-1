@@ -3,29 +3,41 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
-#include <assert.h>
 
 
 struct node
 {
-    char name[255];
-    int code;
+    int number;
     struct node* next; // untuk define pointer ke node selanjutnya
 }*head, *tail;
 
-node *create_node(const char* name, int code)
+node *create_node(int number)
 {
     node *new_node = (node*)malloc(sizeof(node));
-    strcpy(new_node -> name, name);
-    new_node -> code = code;
+    new_node -> number = number;
     new_node -> next = NULL;
     return new_node;
 }
 
-void push_tail(const char* name, int code)
+void push_head(int number)
 {
-    node *temp = create_node(name, code); // untuk membuat node baru
+    node *temp = create_node(number);
+
+    if (!head)
+    {
+        head = tail = temp;
+    }
+
+    else
+    {
+        temp -> next = head;
+        temp = head;
+    }   
+}
+
+void push_tail(int number)
+{
+    node *temp = create_node(number); // untuk membuat node baru
 
     if (!head)
     {
@@ -37,6 +49,56 @@ void push_tail(const char* name, int code)
         tail -> next = temp; // tail lama -> next adalah node baru
         tail = temp; // node baru akan menjadi tail
     }
+}
+
+void push_mid(int number)
+{
+    node* temp = create_node(number);
+
+    if (!head)
+    {
+        head = tail = temp;
+    }
+
+    else if (number < head -> number)
+    {
+        push_head(number);
+    }
+
+    else if (number > tail -> number)
+    {
+        push_tail(number);
+    }
+
+    else
+    {
+        node *current = head;
+
+        while (current && current -> next -> number < number)
+        {
+            current = current -> next;
+        }
+
+        temp -> next = current -> next;
+        current -> next = temp;
+    }
+}
+
+void print_singleLL()
+{
+    node *temp = head;
+
+    if (!head)
+    {
+        return;
+    }
+
+    while (temp)
+    {
+        printf("%d\n", temp -> number);
+        temp = temp -> next;
+    }
+    puts("");
 }
 
 /*
@@ -66,33 +128,22 @@ struct node* merge_node(struct node* a, struct node* b)
 int main()
 {
     int m, n, l1, l2;
-    struct node* result = NULL;
-    struct node* x = NULL;
-    struct node* y = NULL;
 
     scanf("%d", &m);
     for (int i = 0; i < m; i++)
     {
         scanf("%d", &l1);
+        push_mid(l1);
     }
 
     scanf("%d", &n);
     for (int j = 0; j < n; j++)
     {
         scanf("%d", &l2);
+        push_mid(l2);
     }
 
-    int merge = m + n;
-    for (int k = 0; k < m; k++)
-    {
-        for (int p = 0; p < n; p++)
-        {
-            if ()
-            {
-
-            }
-        }
-    }
+    print_singleLL();
 
     return 0;
 }
