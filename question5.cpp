@@ -94,10 +94,10 @@ void push_mid(int number)
     }
 }
 
-void search_nth (int n)
+void search_index (int n, int target)
 {
-    int size = 0;
     node* current = head;
+    node* temp = head;
     current = head;
 
     if (!head)
@@ -105,29 +105,42 @@ void search_nth (int n)
         return;
     }
 
-    while (current)
-    {
-        current = current -> next;
-        size++;
-    }
+    n -= target;
 
-    // cek kalau n < size single linked list supaya kalau benar, berarti dia tidak perlu melakukan apa-apa.
-    if (size < n)
+    if (n < 0)
     {
         return;
     }
 
-    for (int j = 0; j < size - n + 1; j++)
+    while (n != 0)
     {
         current = current -> next;
+        n--;
     }
 
     printf("%d\n", current -> number);
 }
 
+void print_singleLL()
+{
+    node *temp = head;
+
+    if (!head)
+    {
+        return;
+    }
+
+    while (temp)
+    {
+        printf("%d\n", temp -> number);
+        temp = temp -> next;
+    }
+    puts("");
+}
+
 int main()
 {
-    int n, linked_list;
+    int n, linked_list, target;
 
     scanf("%d", &n);
 
@@ -137,7 +150,9 @@ int main()
         push_mid(linked_list);
     }
 
-    search_nth(n);
+    scanf("%d", &target);
+
+    search_index(n, target);
 
     return 0;
 }
